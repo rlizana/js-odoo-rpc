@@ -24,7 +24,7 @@ if (is_node) {
   }
 }
 
-type OdooConnectOptions = {
+export type OdooConnectOptions = {
   url: string
   dbname: string
   username?: string
@@ -71,8 +71,10 @@ export const connect = async (opts: OdooConnectOptions) => {
     }
     const data = await res.json()
     config.info = data.result
-    config.uid = config.info.uid
-    config.context = config.info.user_context
+    if (config.info) {
+      config.uid = config.info.uid
+      config.context = config.info.user_context
+    }
     config.password = opts.password
   }
 }
@@ -119,7 +121,7 @@ export const call_kw = async (
   return data.result
 }
 
-export const get_url = (endpoint: boolean) => {
+export const get_url = (endpoint: string) => {
   return config.url.replace(/\/+$/, '') + endpoint
 }
 

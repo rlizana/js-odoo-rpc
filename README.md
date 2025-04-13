@@ -28,7 +28,11 @@ npm install js-odoo-rpc cross-fetch fetch-cookie
 
 ### Browser (ESM)
 
-Add this to your project and bundle with Vite, Webpack, etc.
+Use a bundler like Vite, Webpack or Rollup and import the browser version:
+
+```js
+import { connect, env } from './dist/js-odoo-rpc.browser.js'
+```
 
 ---
 
@@ -104,4 +108,11 @@ To use it, just run:
 npx tsx repl.ts
 ```
 
-Make sure you have your credentials and Odoo instance configured properly in the script before running it.
+Or can use `npm` to run the script:
+
+```bash
+npm run shell
+```
+
+This will start a REPL session where you can type in your Odoo commands and see the results in real-time. It's a great way to test out different methods and see how they work without needing to write a full script.
+You can also use the REPL to test out different models and methods, making it a powerful tool for exploring the Odoo API.

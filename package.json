@@ -1,28 +1,37 @@
 {
-    "name": "odoo-client-ts",
-    "version": "0.1.0",
-    "description": "TypeScript client for Odoo JSON-RPC API",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "name": "js-odoo-rpc",
+    "version": "1.0.0",
+    "description": "A lightweight JS/TS library to interact with Odoo via JSON-RPC and session",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "dev": "vitest watch",
         "test": "vitest run",
         "lint": "eslint . --ext .ts",
         "format": "prettier --write .",
         "shell": "tsx scripts/repl.ts",
-        "build": "tsc"
+        "build": "node build.mjs"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rlizana/js-odoo-rpc.git"
+    },
+    "author": "Roberto Lizana",
+    "license": "MIT",
     "keywords": [
         "odoo",
+        "rpc",
         "jsonrpc",
-        "typescript",
-        "client",
-        "orm"
+        "api"
     ],
-    "license": "MIT",
     "devDependencies": {
+        "@types/node": "^22.14.1",
         "@typescript-eslint/eslint-plugin": "^7.5.0",
         "@typescript-eslint/parser": "^7.5.0",
+        "esbuild": "^0.25.2",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-svelte": "^2.35.1",
