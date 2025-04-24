@@ -1,19 +1,28 @@
 {
+    "type": "module",
     "name": "js-odoo-rpc",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "A lightweight JS/TS library to interact with Odoo via JSON-RPC and session",
-    "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        }
+    },
     "files": [
         "dist"
     ],
     "scripts": {
         "dev": "vitest watch",
         "test": "vitest run",
+        "test-browser": "playwright test",
         "lint": "eslint . --ext .ts",
         "format": "prettier --write .",
         "shell": "tsx scripts/repl.ts",
-        "build": "node build.mjs"
+        "build": "tsup"
     },
     "repository": {
         "type": "git",
@@ -28,6 +37,7 @@
         "api"
     ],
     "devDependencies": {
+        "@playwright/test": "^1.52.0",
         "@types/node": "^22.14.1",
         "@typescript-eslint/eslint-plugin": "^7.5.0",
         "@typescript-eslint/parser": "^7.5.0",
@@ -37,6 +47,7 @@
         "eslint-plugin-svelte": "^2.35.1",
         "jsdom": "^26.0.0",
         "prettier": "^3.2.5",
+        "tsup": "^8.4.0",
         "tsx": "^4.19.3",
         "typescript": "^5.4.5",
         "vitest": "^1.4.0"

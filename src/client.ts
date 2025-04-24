@@ -1,26 +1,32 @@
 // Set fetch to use cookies is you are in node
 export let fetch_session: typeof fetch
-const is_node =
-  typeof process !== 'undefined' &&
-  typeof process.versions === 'object' &&
-  typeof process.versions.node !== 'undefined'
-if (is_node) {
-  const fetch = require('cross-fetch')
-  const fetchCookieModule = require('fetch-cookie')
-  const fetchCookie = fetchCookieModule.default || fetchCookieModule
-  const fetch_with_cookies = fetchCookie(fetch)
-  fetch_session = (url, options) => {
-    return fetch_with_cookies(url, {
-      ...options,
-      credentials: 'include'
-    })
-  }
-} else {
-  fetch_session = (url, options) => {
-    return fetch(url, {
-      ...options,
-      credentials: 'include'
-    })
+
+export async function init_fetch() {
+  const is_node =
+    typeof process !== 'undefined' &&
+    typeof process.versions === 'object' &&
+    typeof process.versions.node !== 'undefined'
+
+  if (is_node) {
+    const fetch = (await import('cross-fetch')).default
+    const fetchCookieModule = await import('fetch-cookie')
+    const fetchCookie = fetchCookieModule.default || fetchCookieModule
+    const fetch_with_cookies = fetchCookie(fetch)
+
+    fetch_session = (url, options) => {
+      return fetch_with_cookies(url, {
+        ...options,
+        credentials: 'include'
+      })
+    }
+  } else {
+    const fetch = (await import('cross-fetch')).default
+    fetch_session = (url, options) => {
+      return fetch(url, {
+        ...options,
+        credentials: 'include'
+      })
+    }
   }
 }
 
@@ -50,6 +56,7 @@ export let config: {
 }
 
 export const connect = async (opts: OdooConnectOptions) => {
+  await init_fetch()
   config.url = opts.url
   config.dbname = opts.dbname
   config.verbose = opts.verbose ?? false

@@ -18,3 +18,4 @@ export const odoo: Odoo = {
 }
 
 export type { OdooConnectOptions } from './client'
+export default odoo

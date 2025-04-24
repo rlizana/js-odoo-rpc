@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest'
-import { odoo } from '../src'
+import { odoo } from '../../'
 
 describe('Connecting to Odoo, incorrect', () => {
   it('incorrect login', async () => {

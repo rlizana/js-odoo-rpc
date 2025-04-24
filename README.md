@@ -6,15 +6,15 @@ It works in both **Node.js** and **browser environments**, making it suitable fo
 
 ---
 
-## ✨ Features
+## Features
 
-- Session-based login (`/web/session/authenticate`)
+- Works with both Node.js and browser fetch
 - Automatic cookie handling (with `fetch-cookie` in Node)
+- Session-based login (`/web/session/authenticate`)
 - JSON-RPC calls to any Odoo model/method
 - Simplified API with `env('model')`
 - Report printing via `/report/pdf/...` (PDF download)
 - Built-in context and CSRF token support
-- Works with both Node.js and browser fetch
 
 ---
 
