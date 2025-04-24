@@ -14,7 +14,7 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_DB: test
+          POSTGRES_DB: odoo
           POSTGRES_USER: odoo
           POSTGRES_PASSWORD: odoo
         ports:
@@ -29,10 +29,8 @@ jobs:
         image: odoo:16
         env:
           HOST: postgres
-          PGHOST: postgres
           POSTGRES_USER: odoo
           POSTGRES_PASSWORD: odoo
-          POSTGRES_DB: test
         ports:
           - 8069:8069
         options: >-
