@@ -1,4 +1,4 @@
-name: Run Vitest Unit Tests
+name: Vitest Unit Tests with Odoo
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  vitest:
+  test:
     runs-on: ubuntu-latest
 
     services:
@@ -27,19 +27,20 @@ jobs:
 
       odoo:
         image: odoo:16
-        ports:
-          - 8069:8069
         env:
           HOST: postgres
-          USER: odoo
-          PASSWORD: odoo
-          POSTGRES_DB: test
           PGHOST: postgres
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo
+          POSTGRES_DB: test
+        ports:
+          - 8069:8069
         options: >-
+          --link postgres
           --health-cmd="curl --fail http://localhost:8069/web/login || exit 1"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=10
+          --health-retries=15
 
     steps:
       - name: Checkout repository
