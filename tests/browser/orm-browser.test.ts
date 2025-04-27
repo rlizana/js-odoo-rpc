@@ -2,13 +2,13 @@ import { test, expect } from '@playwright/test'
 import { Odoo } from '../../src/index'
 
 test('Connecting to Odoo, incorrect', async () => {
-  let odoo = new Odoo('http://localhost:8069', 'test')
+  let odoo = new Odoo('http://localhost:8069', 'odoo')
   await expect(odoo.login('admin', 'wrongpassword')).rejects.toThrowError()
   expect(odoo.is_loged()).toBe(false)
 })
 
 test.describe('Test Odoo connection', () => {
-  let odoo = new Odoo('http://localhost:8069', 'test')
+  let odoo = new Odoo('http://localhost:8069', 'odoo')
 
   test.beforeAll(async () => {
     await odoo.login('admin', 'admin')

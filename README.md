@@ -154,3 +154,41 @@ npm run shell
 
 This will start a REPL session where you can type in your Odoo commands and see the results in real-time. It's a great way to test out different methods and see how they work without needing to write a full script.
 You can also use the REPL to test out different models and methods, making it a powerful tool for exploring the Odoo API.
+
+---
+
+## Tests
+
+To run unit and browser tests, you need an Odoo environment accessible at `localhost:8069` with a database named `odoo`. You can easily set this up using Docker Compose:
+
+```bash
+cd tests/docker
+docker compose up
+```
+
+This will start an Odoo container and a PostgreSQL container, exposing Odoo on port 8069 of your local machine and automatically creating the `odoo` database with user and password `odoo`.
+
+> **Warning:** Do not use a production database for testing. These tests may create, modify, and delete data. Always use a test database.
+
+Once the environment is up, you can run the tests as many times as you want on the same database.
+
+### Unit tests (Node.js)
+
+From the project root, run:
+
+```bash
+npm run test
+```
+
+This will run the unit tests using Vitest, connecting to the Docker Odoo.
+
+### Browser tests (Playwright)
+
+To run end-to-end browser tests:
+
+```bash
+npm run test-browser
+```
+
+This will run the Playwright tests, also against the Odoo instance exposed at `localhost:8069`.
+

@@ -1,0 +1,69 @@
+name: Run NodeJS and Browser Tests with Odoo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      odoo:
+        image: odoo:16
+        depends_on:
+          db:
+            condition: service_healthy
+        ports:
+          - 8069:8069
+        env:
+          HOST: db
+          USER: odoo
+          PASSWORD: odoo
+          DATABASE: odoo
+        options: >-
+          --health-cmd "curl --fail http://localhost:8069 || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+        command: >
+          odoo
+          --db_host=db
+          --db_user=odoo
+          --db_password=odoo
+          --init=base
+          --database=odoo
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Node.js unit tests
+        run: npm run test
+
+      - name: Run Browser tests
+        run: npm run test-browser
