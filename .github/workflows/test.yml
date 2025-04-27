@@ -25,31 +25,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-      odoo:
-        image: odoo:16
-        depends_on:
-          db:
-            condition: service_healthy
-        ports:
-          - 8069:8069
-        env:
-          HOST: db
-          USER: odoo
-          PASSWORD: odoo
-          DATABASE: odoo
-        options: >-
-          --health-cmd "curl --fail http://localhost:8069 || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-        command: >
-          odoo
-          --db_host=db
-          --db_user=odoo
-          --db_password=odoo
-          --init=base
-          --database=odoo
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -61,6 +36,27 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Start Odoo manually
+        run: |
+          docker run -d --network host \
+            -e HOST=localhost \
+            -e USER=odoo \
+            -e PASSWORD=odoo \
+            -e DATABASE=odoo \
+            odoo:16 \
+            odoo --db_host=localhost --db_user=odoo --db_password=odoo --init=base --database=odoo
+
+      - name: Wait for Odoo to be ready
+        run: |
+          echo "Waiting for Odoo..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8069 | grep -q "Odoo"; then
+              echo "Odoo is ready!"
+              break
+            fi
+            sleep 2
+          done
 
       - name: Run Node.js unit tests
         run: npm run test
