@@ -29,7 +29,7 @@
         "url": "https://github.com/rlizana/odoo-rpc.git"
     },
     "author": "Roberto Lizana",
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "keywords": [
         "odoo",
         "rpc",
