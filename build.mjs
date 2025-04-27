@@ -15,7 +15,7 @@ await build({
   platform: 'node',
   format: 'esm',
   target: ['node16'],
-  outfile: 'dist/js-odoo-rpc.node.js'
+  outfile: 'dist/odoo-rpc.node.js'
 })
 
 // Build for browser
@@ -24,5 +24,5 @@ await build({
   platform: 'browser',
   format: 'esm',
   target: ['es2018'],
-  outfile: 'dist/js-odoo-rpc.browser.js'
+  outfile: 'dist/odoo-rpc.browser.js'
 })

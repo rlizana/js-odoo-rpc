@@ -3,7 +3,7 @@ import { Odoo } from '../../src/index'
 
 test('Connecting to Odoo, incorrect', async () => {
   let odoo = new Odoo('http://localhost:8069', 'odoo')
-  await expect(odoo.login('admin', 'wrongpassword')).rejects.toThrowError()
+  await expect(odoo.login('admin', 'wrongpassword')).srejects.toThrowError()
   expect(odoo.is_loged()).toBe(false)
 })
 
@@ -22,7 +22,7 @@ test.describe('Test Odoo connection', () => {
 
   test('res.partner create', async () => {
     const partner = await odoo.env('res.partner').create({
-      name: 'js-odoo-rpc: Test Partner'
+      name: 'odoo-rpc: Test Partner'
     })
     expect(partner).toBeDefined()
     expect(typeof partner[0]).toBe('number')
@@ -30,19 +30,19 @@ test.describe('Test Odoo connection', () => {
 
   test('res.partner update', async () => {
     const partner = await odoo.env('res.partner').create({
-      name: 'js-odoo-rpc: Test Partner'
+      name: 'odoo-rpc: Test Partner'
     })
     expect(partner).toBeDefined()
     expect(typeof partner[0]).toBe('number')
 
     const write_ok = await odoo
       .env('res.partner')
-      .write(partner[0], { name: 'js-odoo-rpc: Test Partner Updated' })
+      .write(partner[0], { name: 'odoo-rpc: Test Partner Updated' })
     expect(write_ok).toBe(true)
 
     const partners = await odoo
       .env('res.partner')
-      .search([['name', '=', 'js-odoo-rpc: Test Partner Updated']])
+      .search([['name', '=', 'odoo-rpc: Test Partner Updated']])
       .read(['name'])
     expect(partners.length).toBeGreaterThan(0)
   })
@@ -85,14 +85,14 @@ test.describe('Test Odoo connection', () => {
 
   test('res.partner unlink', async () => {
     await odoo.env('res.partner').create({
-      name: 'js-odoo-rpc: Test Partner 1'
+      name: 'odoo-rpc: Test Partner 1'
     })
     await odoo.env('res.partner').create({
-      name: 'js-odoo-rpc: Test Partner 2'
+      name: 'odoo-rpc: Test Partner 2'
     })
     const partners = await odoo
       .env('res.partner')
-      .search([['name', 'like', 'js-odoo-rpc: Test Partner %']])
+      .search([['name', 'like', 'odoo-rpc: Test Partner %']])
       .read(['name'])
     expect(partners.length).toBeGreaterThan(2)
 

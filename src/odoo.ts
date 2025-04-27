@@ -1,7 +1,7 @@
 import { Model } from './model'
 
 export class Odoo {
-  private fetch_session!: typeof fetch
+  public fetch_session!: typeof fetch
   public config = {
     url: '',
     dbname: '',
@@ -54,7 +54,7 @@ export class Odoo {
     }
   }
 
-  private get_url(endpoint: string) {
+  public get_url(endpoint: string) {
     return this.config.url.replace(/\/+$/, '') + endpoint
   }
 
