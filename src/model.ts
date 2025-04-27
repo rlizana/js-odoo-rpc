@@ -1,11 +1,12 @@
-import { call_kw, get_url, fetch_session } from './client'
+import type { Odoo } from './odoo'
 
-class OdooModel {
+export class Model {
   private model: string
   private _domain: any[] = []
   private _fields: string[] = []
 
-  constructor(model: string) {
+  constructor(odoo: Odoo, model: string) {
+    this.odoo = odoo
     this.model = model
   }
 
@@ -47,7 +48,7 @@ class OdooModel {
   }
 
   call(method: string, args: any[] = [], kwargs: Record<string, any> = {}) {
-    return call_kw(this.model, method, args, kwargs)
+    return this.odoo.call_kw(this.model, method, args, kwargs)
   }
 
   async print(reportName: string, ids: number[]) {
@@ -57,8 +58,8 @@ class OdooModel {
     if (!Array.isArray(ids) || ids.length === 0) {
       throw new Error('IDs must be a non-empty array')
     }
-    const url = get_url(`/report/pdf/${reportName}/${ids.join(',')}`)
-    const res = await fetch_session(url, {
+    const url = this.odoo.get_url(`/report/pdf/${reportName}/${ids.join(',')}`)
+    const res = await this.odoo.fetch_session(url, {
       method: 'GET',
       headers: {
         Accept: 'application/pdf'
@@ -72,5 +73,3 @@ class OdooModel {
     return res.arrayBuffer()
   }
 }
-
-export const env = (model: string) => new OdooModel(model)

@@ -9,14 +9,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: ghcr.io/oca/oca-ci/py3.10-odoo17.0:latest
+    name: test with Odoo
 
     services:
       postgres:
-        image: postgres:15
+        image: postgres:12.0
         env:
-          POSTGRES_DB: odoo
           POSTGRES_USER: odoo
           POSTGRES_PASSWORD: odoo
+          POSTGRES_DB: odoo
         ports:
           - 5432:5432
         options: >-
@@ -24,21 +26,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
-      odoo:
-        image: odoo:16
-        env:
-          HOST: postgres
-          POSTGRES_USER: odoo
-          POSTGRES_PASSWORD: odoo
-        ports:
-          - 8069:8069
-        options: >-
-          --link postgres
-          --health-cmd="curl --fail http://localhost:8069/web/login || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=15
 
     steps:
       - name: Checkout repository

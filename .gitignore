@@ -21,6 +21,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Test result of playwright
+test-results/
+
 # Test coverage
 coverage/
 
