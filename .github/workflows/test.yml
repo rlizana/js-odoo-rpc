@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Start Odoo manually
+      - name: Init Odoo and crate database
         run: |
           docker run -d --network host \
             -e HOST=localhost \

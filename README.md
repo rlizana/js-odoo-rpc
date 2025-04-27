@@ -1,5 +1,11 @@
 # js-odoo-rpc
 
+[![Tests](https://github.com/rlizana/js-odoo-rpc/actions/workflows/test.yml/badge.svg)](https://github.com/rlizana/js-odoo-rpc/actions)
+[![npm](https://img.shields.io/npm/v/js-odoo-rpc)](https://www.npmjs.com/package/js-odoo-rpc)
+[![npm](https://img.shields.io/npm/dt/js-odoo-rpc)](https://www.npmjs.com/package/js-odoo-rpc)
+[![GitHub](https://img.shields.io/github/license/rlizana/js-odoo-rpc)](
+
+
 **js-odoo-rpc** is a lightweight JavaScript/TypeScript library to interact with Odoo (tested on Odoo 16, 17, 18) via JSON-RPC and session-based authentication.
 
 It works in both **Node.js** and **browser environments**, making it suitable for frontend frameworks (Svelte, Vue, React) and backend scripts.
