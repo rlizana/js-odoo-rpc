@@ -16,6 +16,46 @@ It works in both **Node.js** and **browser environments**, making it suitable fo
 - Report printing via `/report/pdf/...` (PDF download)
 - Built-in context and CSRF token support
 
+# How it works
+
+Same code for Node.js and browser. The library uses `fetch` for HTTP requests, and in Node.js, it uses `fetch-cookie` to handle cookies automatically.
+
+```js
+import { Odoo } from 'js-odoo-rpc'
+
+const odoo = new Odoo('http://localhost:8069', 'test')
+await odoo.login('admin', 'admin')
+
+// Search and partners and read their names
+let partners = await odoo
+  .env('res.partner')
+  .search([['name', 'ilike', 'Azure%']])
+  .read(['name'])
+
+// Modify a partner
+let result = await odoo
+  .env('res.partner')
+  .write([partners[0].id], { name: 'New name' })
+
+// Create a partner
+let partner_id = await odoo
+  .env('res.partner')
+  .create({ name: 'New name' })
+
+// Remove a partner
+let result = await odoo
+  .env('res.partner')
+  .unlink([partner_id])
+
+// Call any method
+let names = await odoo
+  .env('res.partner')
+  .call('name_search', ['Azure%'], 0, 10)
+
+
+
+```
+
 ---
 
 ## Installation
@@ -31,7 +71,11 @@ npm install js-odoo-rpc cross-fetch fetch-cookie
 Use a bundler like Vite, Webpack or Rollup and import the browser version:
 
 ```js
-import { connect, env } from './dist/js-odoo-rpc.browser.js'
+import { Odoo } from 'js-odoo-rpc'
+
+const odoo = new Odoo('http://localhost:8069', 'test')
+await odoo.login('admin', 'admin')
+
 ```
 
 ---
@@ -41,15 +85,10 @@ import { connect, env } from './dist/js-odoo-rpc.browser.js'
 ### 1. Connect to Odoo
 
 ```ts
-import { connect, is_loged } from 'js-odoo-rpc'
+import { Odoo } from 'js-odoo-rpc'
 
-await connect({
-  url: 'http://localhost:8069',
-  dbname: 'test',
-  username: 'admin',
-  password: 'admin',
-  verbose: true
-})
+const odoo = new Odoo('http://localhost:8069', 'test')
+await odoo.login('admin', 'admin')
 
 console.log(is_loged()) // true if login was successful
 ```
@@ -92,7 +131,6 @@ await env('res.partner').call('default_get', [['name', 'email']])
 
 ```ts
 const buffer = await env('sale.order').print('sale.report_saleorder', [7])
-
 const blob = new Blob([buffer], { type: 'application/pdf' })
 const url = URL.createObjectURL(blob)
 window.open(url)
