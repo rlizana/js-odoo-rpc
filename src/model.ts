@@ -1,6 +1,7 @@
 import type { Odoo } from './odoo'
 
 export class Model {
+  private odoo: Odoo
   private model: string
   private _domain: any[] = []
   private _fields: string[] = []

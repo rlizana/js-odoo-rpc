@@ -1,7 +1,7 @@
 {
     "type": "module",
-    "name": "js-odoo-rpc",
-    "version": "1.0.2",
+    "name": "@rlizana/odoo-rpc",
+    "version": "1.0.4",
     "description": "A lightweight JS/TS library to interact with Odoo via JSON-RPC and session",
     "types": "./dist/index.d.ts",
     "main": "./dist/index.cjs",
@@ -26,7 +26,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/rlizana/js-odoo-rpc.git"
+        "url": "https://github.com/rlizana/odoo-rpc.git"
     },
     "author": "Roberto Lizana",
     "license": "MIT",

@@ -1,12 +1,12 @@
-# js-odoo-rpc
+# odoo-rpc
 
-[![Tests](https://github.com/rlizana/js-odoo-rpc/actions/workflows/test.yml/badge.svg)](https://github.com/rlizana/js-odoo-rpc/actions)
-[![npm](https://img.shields.io/npm/v/js-odoo-rpc)](https://www.npmjs.com/package/js-odoo-rpc)
-[![npm](https://img.shields.io/npm/dt/js-odoo-rpc)](https://www.npmjs.com/package/js-odoo-rpc)
-[![GitHub](https://img.shields.io/github/license/rlizana/js-odoo-rpc?label=license)](https://github.com/rlizana/js-odoo-rpc/blob/main/LICENSE)
+[![Tests](https://github.com/rlizana/odoo-rpc/actions/workflows/test.yml/badge.svg)](https://github.com/rlizana/odoo-rpc/actions)
+[![npm](https://img.shields.io/npm/v/@rlizana/odoo-rpc)](https://www.npmjs.com/package/@rlizana/odoo-rpc)
+[![npm](https://img.shields.io/npm/dt/@rlizana/odoo-rpc)](https://www.npmjs.com/package/@rlizana/odoo-rpc)
+[![GitHub](https://img.shields.io/github/license/rlizana/odoo-rpc?label=license)](https://github.com/rlizana/odoo-rpc/blob/main/LICENSE)
 
 
-**js-odoo-rpc** is a lightweight JavaScript/TypeScript library to interact with Odoo (tested on Odoo 16, 17, 18) via JSON-RPC and session-based authentication.
+**odoo-rpc** is a lightweight JavaScript/TypeScript library to interact with Odoo (tested on Odoo 16, 17, 18) via JSON-RPC and session-based authentication.
 
 It works in both **Node.js** and **browser environments**, making it suitable for frontend frameworks (Svelte, Vue, React) and backend scripts.
 
@@ -26,8 +26,16 @@ It works in both **Node.js** and **browser environments**, making it suitable fo
 
 Same code for Node.js and browser. The library uses `fetch` for HTTP requests, and in Node.js, it uses `fetch-cookie` to handle cookies automatically.
 
+Install the library with npm
+
+```bash
+npm install @rlizana/odoo-rpc
+```
+
+Use it in your code:
+
 ```js
-import { Odoo } from 'js-odoo-rpc'
+import { Odoo } from '@rlizana/odoo-rpc'
 
 const odoo = new Odoo('http://localhost:8069', 'test')
 await odoo.login('admin', 'admin')
@@ -69,7 +77,7 @@ let names = await odoo
 ### Node.js
 
 ```bash
-npm install js-odoo-rpc
+npm install odoo-rpc
 ```
 
 ### Browser (ESM)
@@ -77,7 +85,7 @@ npm install js-odoo-rpc
 Use a bundler like Vite, Webpack or Rollup and import the browser version:
 
 ```js
-import { Odoo } from 'js-odoo-rpc'
+import { Odoo } from '@rlizana/odoo-rpc'
 
 const odoo = new Odoo('http://localhost:8069', 'test')
 await odoo.login('admin', 'admin')
@@ -91,7 +99,7 @@ await odoo.login('admin', 'admin')
 ### 1. Connect to Odoo
 
 ```ts
-import { Odoo } from 'js-odoo-rpc'
+import { Odoo } from '@rlizana/odoo-rpc'
 
 const odoo = new Odoo('http://localhost:8069', 'test')
 await odoo.login('admin', 'admin')
