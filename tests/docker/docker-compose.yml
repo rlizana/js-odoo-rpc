@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: test
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'odoo']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  odoo:
+    image: odoo:16
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8069:8069
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+      - DATABASE=odoo
+    command: >
+      odoo
+      --db_host=db
+      --db_user=odoo
+      --db_password=odoo
+      --init=base
+      --database=odoo

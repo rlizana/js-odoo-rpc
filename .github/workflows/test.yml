@@ -1,0 +1,65 @@
+name: Run NodeJS and Browser Tests with Odoo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Init Odoo and crate database
+        run: |
+          docker run -d --network host \
+            -e HOST=localhost \
+            -e USER=odoo \
+            -e PASSWORD=odoo \
+            -e DATABASE=odoo \
+            odoo:16 \
+            odoo --db_host=localhost --db_user=odoo --db_password=odoo --init=base --database=odoo
+
+      - name: Wait for Odoo to be ready
+        run: |
+          echo "Waiting for Odoo..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8069 | grep -q "Odoo"; then
+              echo "Odoo is ready!"
+              break
+            fi
+            sleep 2
+          done
+
+      - name: Run Node.js unit tests
+        run: npm run test
+
+      - name: Run Browser tests
+        run: npm run test-browser
