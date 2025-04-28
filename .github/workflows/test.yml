@@ -1,4 +1,4 @@
-name: Run NodeJS and Browser Tests with Odoo
+name: Node & Browser Tests
 
 on:
   push:
