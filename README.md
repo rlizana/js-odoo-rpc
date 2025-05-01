@@ -77,7 +77,7 @@ let names = await odoo
 ### Node.js
 
 ```bash
-npm install odoo-rpc
+npm install @rlizana/odoo-rpc
 ```
 
 ### Browser (ESM)
