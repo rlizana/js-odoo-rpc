@@ -176,8 +176,7 @@ You can also use the REPL to test out different models and methods, making it a 
 To run unit and browser tests, you need an Odoo environment accessible at `localhost:8069` with a database named `odoo`. You can easily set this up using Docker Compose:
 
 ```bash
-cd tests/docker
-docker compose up
+docker compose -f tests/docker/docker-compose.yml up
 ```
 
 This will start an Odoo container and a PostgreSQL container, exposing Odoo on port 8069 of your local machine and automatically creating the `odoo` database with user and password `odoo`.

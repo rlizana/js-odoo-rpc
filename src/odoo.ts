@@ -21,6 +21,10 @@ export class Odoo {
   }
 
   private async init_fetch() {
+    if (typeof this.fetch_session !== 'undefined') {
+      return false
+    }
+
     const is_node =
       typeof process !== 'undefined' &&
       typeof process.versions === 'object' &&
@@ -46,6 +50,8 @@ export class Odoo {
         })
       }
     }
+
+    return true
   }
 
   private verbose_error(...args: any[]) {
@@ -75,6 +81,7 @@ export class Odoo {
         headers
       )
     }
+    await this.init_fetch()
     return this.fetch_session(url, {
       method: 'POST',
       headers,
@@ -84,8 +91,6 @@ export class Odoo {
   }
 
   async login(username: string, password: string) {
-    await this.init_fetch()
-
     if (!username || !password) {
       this.verbose_error('Username and password are required')
       throw new Error('Username and password are required')
