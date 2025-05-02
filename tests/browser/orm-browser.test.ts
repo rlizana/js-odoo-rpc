@@ -23,6 +23,7 @@ test.describe('Test Odoo connection', () => {
     await odoo.logout()
     expect(odoo.is_loged()).toBe(false)
     expect(await odoo.has_session()).toBe(false)
+    await odoo.login('admin', 'admin')
   })
 
   test('res.partner create', async () => {
