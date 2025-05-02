@@ -5,6 +5,7 @@ test('Connecting to Odoo, incorrect', async () => {
   let odoo = new Odoo('http://localhost:8069', 'odoo')
   await expect(odoo.login('admin', 'wrongpassword')).rejects.toThrowError()
   expect(odoo.is_loged()).toBe(false)
+  expect(await odoo.has_session()).toBe(false)
 })
 
 test.describe('Test Odoo connection', () => {
@@ -16,8 +17,12 @@ test.describe('Test Odoo connection', () => {
 
   test('login', async () => {
     expect(odoo.is_loged()).toBe(true)
-    expect(odoo.config.info).toBeDefined()
+    expect(await odoo.has_session()).toBe(true)
+    expect(odoo.config.session).toBeDefined()
     expect(odoo.config.uid).toBeDefined()
+    await odoo.logout()
+    expect(odoo.is_loged()).toBe(false)
+    expect(await odoo.has_session()).toBe(false)
   })
 
   test('res.partner create', async () => {

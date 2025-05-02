@@ -68,7 +68,6 @@ export class Model {
       credentials: 'include'
     })
     if (!res.ok) {
-      console.log(res)
       throw new Error(`GET failed (${res.status}): ${res.statusText}`)
     }
     return res.arrayBuffer()

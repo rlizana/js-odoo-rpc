@@ -4,13 +4,17 @@ import { Odoo } from '../../src/index'
 describe('Connecting to Odoo, incorrect', () => {
   it('incorrect login', async () => {
     let odoo = new Odoo('http://localhost:8069', 'odoo')
+    odoo.set_verbose(true)
+    await expect(odoo.login('admin', '')).rejects.toThrowError()
     await expect(odoo.login('admin', 'wrongpassword')).rejects.toThrowError()
     expect(odoo.is_loged()).toBe(false)
+    expect(await odoo.has_session()).toBe(false)
   })
 })
 
 describe('Test Odoo connection', () => {
   let odoo = new Odoo('http://localhost:8069', 'odoo')
+  odoo.set_verbose(true)
 
   beforeAll(async () => {
     await odoo.login('admin', 'admin')
@@ -18,8 +22,13 @@ describe('Test Odoo connection', () => {
 
   it('login', async () => {
     expect(odoo.is_loged()).toBe(true)
-    expect(odoo.config.info).toBeDefined()
+    expect(await odoo.has_session()).toBe(true)
+    expect(odoo.config.session).toBeDefined()
     expect(odoo.config.uid).toBeDefined()
+    await odoo.logout()
+    expect(odoo.is_loged()).toBe(false)
+    expect(await odoo.has_session()).toBe(false)
+    await odoo.login('admin', 'admin')
   })
 
   it('res.partner create', async () => {
@@ -110,6 +119,9 @@ describe('Test Odoo connection', () => {
   })
 
   it('res.partner default_get', async () => {
+    await expect(
+      odoo.env('res.partner').call('method_not_exist', [])
+    ).rejects.toThrowError()
     const vals = await odoo.env('res.partner').call('default_get', [['type']])
     expect(vals).toBeDefined()
     expect(typeof vals).toBe('object')
@@ -117,6 +129,13 @@ describe('Test Odoo connection', () => {
   })
 
   it('product.template print', async () => {
+    await expect(odoo.env('res.company').print('', [1])).rejects.toThrowError()
+    await expect(
+      odoo.env('res.company').print('report-not-exists', [])
+    ).rejects.toThrowError()
+    await expect(
+      odoo.env('res.company').print('report-not-exists', [1])
+    ).rejects.toThrowError()
     const companies = await odoo.env('res.company').search([]).read(['id'])
     const buffer = await odoo
       .env('res.company')

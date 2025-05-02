@@ -6,18 +6,23 @@ export class Odoo {
     url: '',
     dbname: '',
     uid: 0,
-    username: '',
-    password: '',
     verbose: false,
-    info: undefined as Record<string, any> | undefined,
+    session: undefined as Record<string, any> | undefined,
     context: undefined as Record<string, any> | undefined,
     session_id: undefined as string | undefined
   }
 
   constructor(url: string, dbname: string, verbose: boolean = false) {
-    console.log(url, dbname)
     this.config.url = String(url).replace(/\/+$/, '')
     this.config.dbname = dbname
+  }
+
+  private is_node() {
+    return (
+      typeof process !== 'undefined' &&
+      typeof process.versions === 'object' &&
+      typeof process.versions.node !== 'undefined'
+    )
   }
 
   private async init_fetch() {
@@ -25,14 +30,9 @@ export class Odoo {
       return false
     }
 
-    const is_node =
-      typeof process !== 'undefined' &&
-      typeof process.versions === 'object' &&
-      typeof process.versions.node !== 'undefined'
-
     const fetch = (await import('cross-fetch')).default
 
-    if (is_node) {
+    if (this.is_node()) {
       const fetchCookieModule = await import('fetch-cookie')
       const fetchCookie = fetchCookieModule.default || fetchCookieModule
       const fetch_with_cookies = fetchCookie(fetch)
@@ -96,7 +96,7 @@ export class Odoo {
       throw new Error('Username and password are required')
     }
 
-    if (!this.config.info) {
+    if (!this.config.session) {
       const res = await this.fetch_json('/web/session/authenticate', {
         jsonrpc: '2.0',
         params: {
@@ -118,14 +118,51 @@ export class Odoo {
         this.verbose_error(`Authentication response: ${data.message}`)
         throw new Error(`Authentication response: ${data.message}`)
       }
+      this.update_config_session(data)
+    }
+    return true
+  }
 
-      this.config.info = data.result
-      if (this.config.info) {
-        this.config.uid = this.config.info.uid
-        this.config.context = this.config.info.user_context
+  async has_session(): Promise<boolean> {
+    await this.init_fetch()
+    const res = await this.fetch_session(
+      this.get_url('/web/session/get_session_info'),
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ jsonrpc: '2.0', params: {}, id: Date.now() })
       }
-      this.config.username = username
-      this.config.password = password
+    )
+    if (!res.ok) return false
+    const data = await res.json()
+    this.update_config_session(data)
+    return !!(data.result && data.result.uid)
+  }
+
+  async logout(): Promise<boolean> {
+    await this.init_fetch()
+    const res = await this.fetch_session(this.get_url('/web/session/destroy'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ jsonrpc: '2.0', params: {}, id: Date.now() })
+    })
+    if (!res.ok) return false
+    this.update_config_session({
+      result: {
+        uid: 0,
+        user_context: {}
+      }
+    })
+    return true
+  }
+
+  private update_config_session(data: Record<string, any>) {
+    this.config.session = data.result
+    if (this.config.session) {
+      this.config.uid = this.config.session.uid
+      this.config.context = this.config.session.user_context
     }
   }
 

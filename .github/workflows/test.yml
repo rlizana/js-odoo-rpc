@@ -61,5 +61,18 @@ jobs:
       - name: Run Node.js unit tests
         run: npm run test
 
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+
+      # Opcional: Enviar a Coveralls (requiere COVERALLS_REPO_TOKEN en secrets)
+      # - name: Upload coverage to Coveralls
+      #   uses: coverallsapp/github-action@v2
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     path-to-lcov: coverage/lcov.info
+
       - name: Run Browser tests
         run: npm run test-browser
