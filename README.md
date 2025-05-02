@@ -1,6 +1,7 @@
 # odoo-rpc
 
 [![Tests](https://github.com/rlizana/odoo-rpc/actions/workflows/test.yml/badge.svg)](https://github.com/rlizana/odoo-rpc/actions)
+[![codecov](https://codecov.io/gh/rlizana/odoo-rpc/branch/main/graph/badge.svg)](https://codecov.io/gh/rlizana/odoo-rpc)
 [![npm](https://img.shields.io/npm/v/@rlizana/odoo-rpc)](https://www.npmjs.com/package/@rlizana/odoo-rpc)
 [![npm](https://img.shields.io/npm/dt/@rlizana/odoo-rpc)](https://www.npmjs.com/package/@rlizana/odoo-rpc)
 [![GitHub](https://img.shields.io/github/license/rlizana/odoo-rpc?label=license)](https://github.com/rlizana/odoo-rpc/blob/main/LICENSE)
