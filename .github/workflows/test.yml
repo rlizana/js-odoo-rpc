@@ -67,12 +67,10 @@ jobs:
           name: coverage-report
           path: coverage/
 
-      # Opcional: Enviar a Coveralls (requiere COVERALLS_REPO_TOKEN en secrets)
-      # - name: Upload coverage to Coveralls
-      #   uses: coverallsapp/github-action@v2
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     path-to-lcov: coverage/lcov.info
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Run Browser tests
         run: npm run test-browser
