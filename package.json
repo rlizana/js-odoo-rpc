@@ -1,7 +1,7 @@
 {
     "type": "module",
     "name": "@rlizana/odoo-rpc",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "A lightweight JS/TS library to interact with Odoo via JSON-RPC and session",
     "types": "./dist/index.d.ts",
     "main": "./dist/index.cjs",
